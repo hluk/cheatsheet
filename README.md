@@ -28,12 +28,51 @@ export K8S_AUTH_API_KEY=$(shell oc whoami --show-token)
 export K8S_AUTH_HOST=$(shell oc whoami --show-server)
 ```
 
+Install different version of Ansible:
+
+```bash
+virtualenv -p python2 .venv
+source .venv/bin/activate
+
+#pip install ansible==2.4
+pip install ansible<2.9
+
+# make sure that system-installed version is not used
+ansible --version
+```
+
 # CMake
 
 ```bash
 cd build
 cmake -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=$PWD/install ~/dev/copyq
 ninja install
+```
+
+# Containers
+
+Remove old unnamed unused images:
+
+```bash
+podman image prune
+```
+
+# Git
+
+Remove parts from the latest commit:
+
+```bash
+git reset -p HEAD^
+# select parts to remove ([y]es/[n]o/[s]plit)
+git commit --amend --no-edit
+git commit -a -m ...
+```
+
+# gpg
+
+```bash
+gpg --edit-key $mail trust
+gpg --verbose --encrypt --recipient $mail --output $file{.gpg,}
 ```
 
 # OpenShift
@@ -64,6 +103,12 @@ spec:
     rollingParams:
       maxSurge: 0
 # ...
+```
+
+# PostgreSQL
+
+```bash
+psql "host=db.dev.example.com user=$user dbname=$db sslmode=require"
 ```
 
 # Python
@@ -153,3 +198,9 @@ def foo():
 - [Powerlevel10k](https://github.com/romkatv/powerlevel10k/) -- fast status line
 - `ALT-H` -- show command help
 - `C-x C-e` -- edit command line
+
+# Other Tools
+
+- [fd](https://github.com/sharkdp/fd)
+- [fzf](https://github.com/junegunn/fzf)
+- [ripgrep/rg](https://github.com/BurntSushi/ripgrep)
